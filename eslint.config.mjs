@@ -51,6 +51,14 @@ const eslintConfig = [
       },
     ],
   }),
+  "overrides": [
+    {
+      files: ["*.ts", "*.tsx"],
+      rules: {
+        "no-undef": "off",
+      },
+    },
+  ],
 ];
 
 export default eslintConfig;
