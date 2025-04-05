@@ -4,6 +4,7 @@ import HomeFilter from "@/components/filters/HomeFilter";
 import LocalSearch from "@/components/search/LocalSearch";
 import { Button } from "@/components/ui/button";
 import ROUTES from "@/constants/routes"
+import handleError from "@/lib/handlers/error";
 import Link from "next/link";
 import { title } from "process";
 
@@ -42,6 +43,7 @@ interface SearchParams {
 }
 
 const Home = async ({searchParams}: SearchParams) => {
+
   const { query = "", filter = ""} = await searchParams;
 
   const filteredQuestions = questions.filter((question) => {
