@@ -17,15 +17,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if(validatedFields.success) {
         const { email, password } = validatedFields.data; 
 
-        const { data: existingUAccount} = (await api.accounts.getByProvider(email)) as ActionResponse<IAccountDoc>;
+        const { data: existingAccount} = (await api.accounts.getByProvider(email)) as ActionResponse<IAccountDoc>;
 
-        if(!existingUAccount) return null;
+        if(!existingAccount) return null;
 
-        const { data: existingUser } = (await api.users.getById(existingUAccount.userId.toString())) as ActionResponse<IUserDoc>;
+        const { data: existingUser } = (await api.users.getById(existingAccount.userId.toString())) as ActionResponse<IUserDoc>;
 
         if(!existingUser) return null;
 
-        const isValidPassword = await bcrypt.compare(password, existingUAccount.password!);
+        const isValidPassword = await bcrypt.compare(password, existingAccount.password!);
 
         if(isValidPassword) {
           return {
