@@ -37,8 +37,10 @@ async function action<T> ({
         }
     }
 
-    return { params, session }
     await dbConnect();
+    
+    return { params, session }
+    
 }
 
 export default action;

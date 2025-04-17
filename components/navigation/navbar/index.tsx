@@ -4,7 +4,7 @@ import React from "react";
 
 import Theme from "./Theme";
 import MobileNavigation from "./MobileNavigation";
-import { auth } from "@/auth";
+import { auth, signOut } from "@/auth";
 import UserAvatar from "@/components/UserAvatar";
 
 const Navbar = async () => {

@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/*@import "tailwindcss";*/
+
 @layer utilities {
   /* Background utilities */
   .background-light850_dark100 {

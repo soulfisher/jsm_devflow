@@ -14,8 +14,7 @@ import {
 import Link from 'next/link'
 import { Button } from '../../ui/button'
 import NavLinks from './NavLinks'
-import { auth } from '@/auth'
-import { signOut } from 'next-auth/react'
+import { auth, signOut } from '@/auth'
 import { LogOut } from 'lucide-react'
 
 const MobileNavigation = async () => {

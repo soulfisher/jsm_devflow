@@ -4,9 +4,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { Button } from '../ui/button'
 import ROUTES from '@/constants/routes'
-import { auth } from '@/auth'
+import { auth, signOut } from '@/auth'
 import { LogOut } from 'lucide-react'
-import { signOut } from 'next-auth/react'
 
 const LeftSidebar = async () => {
     const session = await auth();
@@ -20,9 +19,9 @@ const LeftSidebar = async () => {
 
         <div className='flex flex-col gap-3'>
 
-            {userId ? (
+                {userId ? (
                 <form action={async () => {
-                    "use server"
+                    'use server';
 
                     await signOut();
                 }}>
