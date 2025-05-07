@@ -11,27 +11,33 @@ import { MDXEditorMethods } from '@mdxeditor/editor'
 import dynamic from 'next/dynamic'
 import { z } from 'zod'
 import TagCard from '../cards/TagCard'
-import { createQuestion } from '@/lib/actions/question.action'
+import { createQuestion, editQuestion } from '@/lib/actions/question.action'
 import { useRouter } from 'next/navigation'
 import ROUTES from '@/constants/routes'
 import { ReloadIcon } from '@radix-ui/react-icons'
+import { toast } from "@/components/hooks/use-toast"
 
 const Editor = dynamic(() => import('@/components/editor'), {
     // Make sure we turn SSR off
     ssr: false
   })
 
-const QuestionForm = () => {
+interface Params {
+    question?: Question;
+    isEdit?: boolean;
+}
+
+const QuestionForm = ({question, isEdit = false}: Params) => {
     const router = useRouter();
     const editorRef = useRef<MDXEditorMethods>(null);
-    const [isPending, stratTransition] = useTransition();
+    const [isPending, startTransition] = useTransition();
 
     const form = useForm<z.infer<typeof AskQuestionSchema>>({
         resolver: zodResolver(AskQuestionSchema),
         defaultValues: {
-            title: '',
-            content: '',
-            tags: [],
+            title: question?.title || '',
+            content: question?.content || '',
+            tags: question?.tags.map((tag) => tag.name) || [],
         },
     })
 
@@ -41,7 +47,7 @@ const QuestionForm = () => {
             const tagInput = e.currentTarget.value.trim();
 
             if (tagInput && tagInput.length < 15 && !field.value.includes(tagInput)) {
-                form.setValue('tags', {...field.value, tagInput});
+                form.setValue('tags', [...field.value, tagInput]);
                 e.currentTarget.value = '';
                 form.clearErrors('tags');                      
             } else if (tagInput.length > 15) {
@@ -71,8 +77,31 @@ const QuestionForm = () => {
     };
 
 
-    const handleCreatQuestion = async (data: z.infer<typeof AskQuestionSchema>) => {
+    const handleCreateQuestion = async (data: z.infer<typeof AskQuestionSchema>) => {
         startTransition(async () => {
+
+            if (isEdit && question) {
+                const result = await editQuestion({ questionId: question?._id, ...data });
+            
+                if (result.success) {
+                    toast({
+                        title: 'Success',
+                        description: 'Question updated successsfully'
+                    });
+    
+                    if (result.data) {router.push(ROUTES.QUESTION(result.data._id));
+                    } else {
+                        toast({
+                            title: 'Error: ${result.status}',
+                            description: result.error?.message || "Something went wrong",
+                            variant: "destructive"
+                        })
+                    }
+                }
+
+                return;
+            }
+
             const result = await createQuestion(data);
 
             if (result.success) {
@@ -95,7 +124,7 @@ const QuestionForm = () => {
     };
 
   return <Form {...form}>
-    <form className='flex w-full flex-col gap-10' onSubmit={form.handleSubmit(handleCreatQuestion)}>
+    <form className='flex w-full flex-col gap-10' onSubmit={form.handleSubmit(handleCreateQuestion)}>
     <FormField
         control={form.control}
         name="title"
@@ -176,7 +205,7 @@ const QuestionForm = () => {
                 <span>Submitting</span>
               </>
             ) : (
-              <>Ask A Question</>
+              <>{isEdit ? "Edit" : "Ask a Question"}</>
             )}
             </Button>
           

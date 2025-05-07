@@ -20,7 +20,7 @@ const handleClick = (e: React.MouseEvent) => {
     e.preventDefault();
 }
 
-const TagCard = ({ _id, name, questions, showCount, compact, remove, isButton, handleTagRemove } : Props) => {
+const TagCard = ({ _id, name, questions, showCount, compact, remove, isButton, handleRemove } : Props) => {
     const iconClass = getDeviconClassname(name)
 
     const Content = (

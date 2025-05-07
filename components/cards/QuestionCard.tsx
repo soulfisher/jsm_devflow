@@ -1,10 +1,10 @@
 import ROUTES from '@/constants/routes';
-import { getTimeStamp } from '@/lib/url';
-import { Question } from '@/types/global'
+import { getTimeStamp } from '@/lib/utils'
+
 import Link from 'next/link';
 import React from 'react'
 import TagCard from './TagCard';
-import Metric from '../ui/Metric';
+import Metric from '../Metric';
 
 interface Props {
     question: Question;
@@ -29,13 +29,13 @@ const QuestionCard = ({question: {_id, title, tags, author, createdAt, upvotes, 
         </div>
 
         <div className='flex-between mt-6 w-full flex-wrap gap-3'>
-            <Metric imgUrl={author.image} alt={author.name} value={author.value} title={`• asked ${getTimeStamp(createdAt)}`} textStyles="body-medium text-dark400_light700" isAuthor />
+            <Metric imgUrl={author.image} alt={author.name} value={author.name} title={`• asked ${getTimeStamp(createdAt)}`} textStyles="body-medium text-dark400_light700" isAuthor />
         </div>
         
         <div className='flex items-center gap-3 max-sm:flex-wrap max-sm:justify-start'>
-            <Metric imgUrl="icons/like.svg" alt="like" valuer={upvotes} title=" Votes" textStyles="small-medium text-dark400_light800" />
-            <Metric imgUrl="icons/message.svg" alt="answers" valuer={answers} title=" Answers" textStyles="small-medium text-dark400_light800" />
-            <Metric imgUrl="icons/eye.svg" alt="views" valuer={views} title=" Views" textStyles="small-medium text-dark400_light800" />
+            <Metric imgUrl="icons/like.svg" alt="like" value={upvotes} title=" Votes" textStyles="small-medium text-dark400_light800" />
+            <Metric imgUrl="icons/message.svg" alt="answers" value={answers} title=" Answers" textStyles="small-medium text-dark400_light800" />
+            <Metric imgUrl="icons/eye.svg" alt="views" value={views} title=" Views" textStyles="small-medium text-dark400_light800" />
         </div>
     </div>
   )
