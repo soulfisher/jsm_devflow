@@ -13,7 +13,7 @@ interface Props {
     isAuthor?: boolean;
 }
 
-const Metric = ({imgUrl, alt, value, title,href,textStyles, imgStyles, isAuthor}: Props) => {
+const Metric = ({imgUrl, alt, value, title, href, textStyles, imgStyles, isAuthor}: Props) => {
     const metricContent = (
         <>
             <Image src={imgUrl} width={16} height={16} alt={alt} className={`rounded-full object-contain ${imgStyles}`} />
